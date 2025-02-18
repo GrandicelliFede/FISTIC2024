@@ -51,8 +51,16 @@ def get_pages():
     for file in files:
         page_name = file.capitalize()
         pages.append(page_name)        
-        icons.append(icon_mapping.get(file, 'bi-file'))        
-        module = importlib.import_module(f'{PAGES}.{file}')
+        icons.append(icon_mapping.get(file, 'bi-file'))  
+
+        try:
+            module = importlib.import_module(f'{PAGES}.{file}')
+            modules.append(module)
+        except Exception as e:
+            st.error(f"Errore nell'importazione del modulo {file}: {str(e)}")
+            # Puoi anche stampare l'errore per il debug
+            print(f"Errore nell'importazione del modulo {file}: {str(e)}")
+            
         modules.append(module)
     return pages, icons, modules
 
